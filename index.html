@@ -217,6 +217,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            will-change: transform, opacity;
         }
 
         .slide.active {
@@ -584,14 +585,28 @@
 </header>
 
 
-<<section class="hero">
+<section class="hero">
     <div class="hero-container">
 
+        <link rel="preload" as="image" href="https://js-neo.github.io/chrono-control-saas-page/assets/desktop_manuscript_1.webp">
+
         <div class="slider">
-            <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');"></div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');"></div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');"></div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-1.2.1&auto=format&fit=crop&w=3900&h=2194&q=80');"></div>
+            <div class="slide active"
+                 data-desktop="https://js-neo.github.io/chrono-control-saas-page/assets/desktop_manuscript_1.webp"
+                 data-mobile="https://js-neo.github.io/chrono-control-saas-page/assets/mobile_manuscript_1.webp">
+            </div>
+            <div class="slide"
+                 data-desktop="https://js-neo.github.io/chrono-control-saas-page/assets/desktop_laptop_screen_2.webp"
+                 data-mobile="https://js-neo.github.io/chrono-control-saas-page/assets/mobile_laptop_screen_2.webp">
+            </div>
+            <div class="slide"
+                 data-desktop="https://js-neo.github.io/chrono-control-saas-page/assets/desktop_imac_screen_3.webp"
+                 data-mobile="https://js-neo.github.io/chrono-control-saas-page/assets/mobile_imac_screen_3.webp">
+            </div>
+            <div class="slide"
+                 data-desktop="https://js-neo.github.io/chrono-control-saas-page/assets/desktop_two_laptops_4.webp"
+                 data-mobile="https://js-neo.github.io/chrono-control-saas-page/assets/mobile_two_laptops_4.webp">
+            </div>
         </div>
 
         <div class="container">
@@ -881,41 +896,59 @@
 
 <script>
 
+    function preloadImages() {
+        const slides = document.querySelectorAll('.slide');
+        slides.forEach(slide => {
+            const img = new Image();
+            img.src = slide.dataset.desktop;
+
+            if (window.innerWidth < 768) {
+                const mobileImg = new Image();
+                mobileImg.src = slide.dataset.mobile;
+            }
+        });
+    }
+
+
+    function loadAdaptiveImages() {
+        document.querySelectorAll('.slide').forEach(slide => {
+            const isMobile = window.innerWidth < 768;
+            const imgUrl = isMobile ? slide.dataset.mobile : slide.dataset.desktop;
+            slide.style.backgroundImage = `url('${imgUrl}')`;
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
 
+        loadAdaptiveImages();
+        preloadImages();
+
         const slider = document.querySelector('.slider');
-        if (!slider) {
-            console.error('Слайдер не найден!');
-            return;
-        }
+        if (!slider) return;
 
         const slides = document.querySelectorAll('.slide');
-        if (slides.length === 0) {
-            console.error('Слайды не найдены!');
-            return;
-        }
+        if (slides.length === 0) return;
 
         let currentSlide = 0;
 
         function nextSlide() {
-
-            if (slides.length === 0) return;
-
             slides[currentSlide].classList.remove('active');
             currentSlide = (currentSlide + 1) % slides.length;
             slides[currentSlide].classList.add('active');
-
-            console.log('Текущий слайд:', currentSlide, slides[currentSlide]);
         }
 
         if (slides.length > 1) {
-
             setTimeout(() => {
                 nextSlide();
-
                 setInterval(nextSlide, 5000);
             }, 1000);
         }
+
+
+        window.addEventListener('resize', function() {
+            loadAdaptiveImages();
+        });
+
 
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
