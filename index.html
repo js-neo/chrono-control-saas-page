@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -224,19 +225,6 @@
             opacity: 1;
         }
 
-
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         .features {
             padding: 100px 0;
         }
@@ -290,37 +278,129 @@
         .how-it-works {
             padding: 100px 0;
             background-color: #f8f9fa;
+            overflow: hidden;
+            position: relative;
         }
 
-        .steps {
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-            max-width: 800px;
+        .steps-container {
+            max-width: 1200px;
             margin: 0 auto;
+        }
+
+        .step-wrapper {
+            margin-bottom: 100px;
+            position: relative;
         }
 
         .step {
             display: flex;
-            align-items: flex-start;
-            gap: 20px;
+            align-items: center;
+            gap: 40px;
+            opacity: 0;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            min-height: 500px;
+        }
+
+        .step:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .step:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .step-content {
+            flex: 1;
+            padding: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-image {
+            flex: 1.5;
+            height: 100%;
+            min-height: 400px;
+            position: relative;
+            background-color: #f8f9fa;
+            overflow: hidden;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transform: scale(0.95);
+            transition: transform 0.6s ease, box-shadow 0.6s ease;
+        }
+
+        .step-image img {
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: transform 0.8s ease;
         }
 
         .step-number {
             background-color: var(--primary);
             color: white;
-            width: 40px;
-            height: 40px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
             font-weight: 700;
+            font-size: 28px;
+            margin-bottom: 25px;
         }
 
-        .step-content h3 {
-            margin-bottom: 10px;
+        .step h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--dark);
+            line-height: 1.3;
+        }
+
+        .step p {
+            color: #555;
+            font-size: 18px;
+            line-height: 1.7;
+            max-width: 90%;
+        }
+
+        .step:hover .step-image img {
+            transform: scale(1.03);
+        }
+
+        .step.animate-on-scroll[data-animation="fadeInLeft"] {
+            transform: translateX(-100px);
+        }
+
+        .step.animate-on-scroll[data-animation="fadeInRight"] {
+            transform: translateX(100px);
+        }
+
+        .step.animate-on-scroll.active {
+            opacity: 1;
+            transform: translateX(0) !important;
+        }
+
+        .step.active .step-image {
+            transform: scale(1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+
+        .step.active .step-image img {
+            transform: scale(1.05);
+        }
+
+        .step.inactive {
+            opacity: 0;
+            transform: translateX(-100px);
+        }
+
+        .step.inactive[data-animation="fadeInRight"] {
+            transform: translateX(100px);
         }
 
         .pricing {
@@ -537,32 +617,76 @@
             font-size: 14px;
         }
 
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .step {
+                min-height: 400px;
+            }
+
+            .step-image {
+                min-height: 350px;
+            }
+
+            .step h3 {
+                font-size: 24px;
+            }
+
+            .step p {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .step {
+                flex-direction: column !important;
+                gap: 30px;
+                min-height: auto;
+            }
+
+            .step-content, .step-image {
+                width: 100%;
+                flex: none;
+            }
+
+            .step-content {
+                padding: 20px 0;
+            }
+
+            .step-image {
+                min-height: 300px;
+                order: -1;
+            }
+
+            .step p {
+                max-width: 100%;
+            }
+        }
+
         @media (max-width: 768px) {
-            header {
-                height: 60px;
-                position: static;
+            .how-it-works {
+                padding: 70px 0;
             }
 
-            .hero {
-                height: auto;
-                padding: 120px 0 80px;
+            .step-wrapper {
+                margin-bottom: 70px;
             }
 
-            .hero h1 {
-                font-size: 36px;
+            .step h3 {
+                font-size: 22px;
             }
 
-            .hero p {
-                font-size: 18px;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .nav-links {
-                display: none;
+            .step-image {
+                min-height: 250px;
             }
         }
     </style>
@@ -587,7 +711,6 @@
 
 <section class="hero">
     <div class="hero-container">
-
         <link rel="preload" as="image" href="https://js-neo.github.io/chrono-control-saas-page/assets/desktop_manuscript_1.webp">
 
         <div class="slider">
@@ -683,33 +806,56 @@
             <h2>Как работает WorkTime AI</h2>
             <p>Простой и эффективный процесс учета рабочего времени</p>
         </div>
-        <div class="steps">
-            <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <h3>Идентификация и проверка</h3>
-                    <p>Сотрудник делает селфи на рабочем месте через Telegram-бот (загрузка из галереи блокируется). Система распознает лицо сотрудника и верифицирует местоположение по GPS-координатам и фиксирует время начала и окончания работ.</p>
+        <div class="steps-container">
+            <div class="step-wrapper">
+                <div class="step animate-on-scroll" data-animation="fadeInRight">
+                    <div class="step-content">
+                        <div class="step-number">1</div>
+                        <h3>Идентификация и проверка</h3>
+                        <p>Сотрудник делает селфи на рабочем месте через Telegram-бот (загрузка из галереи блокируется). Система распознает лицо сотрудника и верифицирует местоположение по GPS-координатам и фиксирует время начала и окончания работ.</p>
+                    </div>
+                    <div class="step-image">
+                        <img src="https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/desktop_manuscript_1.webp" alt="Идентификация сотрудника" loading="lazy">
+                    </div>
                 </div>
             </div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <h3>Отправка отчета</h3>
-                    <p>Через бот сотрудники отправляют свои отчеты в двух форматах: фотоотчеты с текстовым описанием и видеоотчеты с голосовыми комментариями.</p>
+
+            <div class="step-wrapper">
+                <div class="step animate-on-scroll" data-animation="fadeInLeft">
+                    <div class="step-image">
+                        <img src="https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/desktop_laptop_screen_2.webp" alt="Отправка отчета" loading="lazy">
+                    </div>
+                    <div class="step-content">
+                        <div class="step-number">2</div>
+                        <h3>Отправка отчета</h3>
+                        <p>Через бот сотрудники отправляют свои отчеты в двух форматах: фотоотчеты с текстовым описанием и видеоотчеты с голосовыми комментариями.</p>
+                    </div>
                 </div>
             </div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <h3>Обработка данных</h3>
-                    <p>ИИ преобразует речь в текст, выделяет ключевые параметры (вид работ, состав бригады, время выполнения) и сохраняет структурированные данные.</p>
+
+            <div class="step-wrapper">
+                <div class="step animate-on-scroll" data-animation="fadeInRight">
+                    <div class="step-content">
+                        <div class="step-number">3</div>
+                        <h3>Обработка данных</h3>
+                        <p>ИИ преобразует речь в текст, выделяет ключевые параметры (вид работ, состав бригады, время выполнения) и сохраняет структурированные данные.</p>
+                    </div>
+                    <div class="step-image">
+                        <img src="https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/desktop_imac_screen_3.webp" alt="Обработка данных ИИ" loading="lazy">
+                    </div>
                 </div>
             </div>
-            <div class="step">
-                <div class="step-number">4</div>
-                <div class="step-content">
-                    <h3>Формирование отчетов</h3>
-                    <p>Руководитель получает готовые отчеты с возможностью фильтрации, редактирования и экспорта в Excel за 30 секунд.</p>
+
+            <div class="step-wrapper">
+                <div class="step animate-on-scroll" data-animation="fadeInLeft">
+                    <div class="step-image">
+                        <img src="https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/desktop_two_laptops_4.webp" alt="Формирование отчетов" loading="lazy">
+                    </div>
+                    <div class="step-content">
+                        <div class="step-number">4</div>
+                        <h3>Формирование отчетов</h3>
+                        <p>Руководитель получает готовые отчеты с возможностью фильтрации, редактирования и экспорта в Excel за 30 секунд.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -895,7 +1041,6 @@
 </footer>
 
 <script>
-
     function preloadImages() {
         const slides = document.querySelectorAll('.slide');
         slides.forEach(slide => {
@@ -909,7 +1054,6 @@
         });
     }
 
-
     function loadAdaptiveImages() {
         document.querySelectorAll('.slide').forEach(slide => {
             const isMobile = window.innerWidth < 768;
@@ -919,7 +1063,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-
         loadAdaptiveImages();
         preloadImages();
 
@@ -944,14 +1087,12 @@
             }, 1000);
         }
 
-
-        window.addEventListener('resize', function() {
+        window.addEventListener('resize', function () {
             loadAdaptiveImages();
         });
 
-
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+            anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
@@ -961,12 +1102,57 @@
                 }
             });
         });
-    });
 
-    window.addEventListener('scroll', () => {
-        const header = document.querySelector('header');
-        header.classList.toggle('header-scrolled', window.scrollY > 50);
+        const animateElements = document.querySelectorAll('.animate-on-scroll');
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    entry.target.classList.remove('inactive');
+                } else {
+                    entry.target.classList.remove('active');
+                    entry.target.classList.add('inactive');
+                }
+            });
+        }, observerOptions);
+
+        animateElements.forEach(element => {
+            element.classList.add('inactive');
+            observer.observe(element);
+        });
+
+        window.addEventListener('scroll', () => {
+            const steps = document.querySelectorAll('.step-wrapper');
+            const windowHeight = window.innerHeight;
+            const windowCenter = windowHeight / 2;
+
+            steps.forEach(step => {
+                const stepImage = step.querySelector('.step-image');
+                if (!stepImage) return;
+
+                const rect = stepImage.getBoundingClientRect();
+                const stepCenter = rect.top + rect.height / 2;
+                const distanceFromCenter = Math.abs(windowCenter - stepCenter);
+                const progress = 1 - Math.min(distanceFromCenter / windowCenter, 1);
+
+                const scale = 0.95 + progress * 0.05;
+                stepImage.style.transform = `scale(${scale})`;
+
+                const img = stepImage.querySelector('img');
+                if (img) {
+                    const translateY = (windowCenter - stepCenter) * 0.05;
+                    img.style.transform = `translateY(${translateY}px) scale(${1 + progress * 0.05})`;
+                }
+            });
+        });
     });
 </script>
 </body>
 </html>
+
