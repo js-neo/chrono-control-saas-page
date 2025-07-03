@@ -340,6 +340,19 @@
             transition: transform 0.8s ease;
         }
 
+        .responsive-image {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 16px;
+            transition: transform 0.8s ease;
+        }
+
         .step-number {
             background-color: var(--primary);
             color: white;
@@ -368,7 +381,8 @@
             max-width: 90%;
         }
 
-        .step:hover .step-image img {
+        .step:hover .step-image img,
+        .step:hover .responsive-image {
             transform: scale(1.03);
         }
 
@@ -390,7 +404,8 @@
             box-shadow: 0 25px 50px rgba(0,0,0,0.2);
         }
 
-        .step.active .step-image img {
+        .step.active .step-image img,
+        .step.active .responsive-image {
             transform: scale(1.05);
         }
 
@@ -617,6 +632,139 @@
             font-size: 14px;
         }
 
+        .video-presentation {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .video-wrapper {
+            position: relative;
+            height: 450px;
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            background: #000;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 15px;
+        }
+
+        .video-presentation .video-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .video-presentation .video-wrapper iframe {
+            max-height: 450px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            animation: fadeIn 0.4s;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 900px;
+            height: auto;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+
+        #player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .close {
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            width: 40px;
+            height: 40px;
+            display: grid;
+            text-align: center;
+            border-radius: 50%;
+            border: 1px solid white;
+            line-height: 1;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .close:hover {
+            color: var(--accent);
+            background: rgba(0,0,0,0.8);
+        }
+
+        .close-container {
+            display: flex;
+            justify-content: end;
+        }
+
+        .btn-video {
+            background-color: rgba(255,255,255,0.15);
+            border: 1px solid white;
+            margin-left: 10px;
+            transition: all 0.3s;
+        }
+
+        .btn-video:hover {
+            background-color: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -673,6 +821,33 @@
         }
 
         @media (max-width: 768px) {
+            header {
+                height: 60px;
+                position: static;
+            }
+
+            .hero {
+                height: auto;
+                padding: 120px 0 80px;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
             .how-it-works {
                 padding: 70px 0;
             }
@@ -687,6 +862,30 @@
 
             .step-image {
                 min-height: 250px;
+            }
+
+            .modal-content {
+                width: 95%;
+                max-height: 60vh;
+            }
+
+            .close {
+                font-size: 25px;
+                width: 35px;
+                height: 35px;
+            }
+
+            .btn-video {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+
+            .video-presentation .video-wrapper {
+                max-height: 300px;
+            }
+
+            .video-presentation .video-wrapper iframe {
+                max-height: 300px;
             }
         }
     </style>
@@ -739,6 +938,9 @@
                 <div class="hero-buttons">
                     <a href="#pricing" class="btn">Начать сейчас</a>
                     <a href="#how-it-works" class="btn btn-outline">Узнать больше</a>
+                    <button class="btn btn-video" onclick="openVideoModal()">
+                        <i class="fas fa-play"></i> Смотреть видео
+                    </button>
                 </div>
             </div>
         </div>
@@ -807,6 +1009,7 @@
             <p>Простой и эффективный процесс учета рабочего времени</p>
         </div>
         <div class="steps-container">
+
             <div class="step-wrapper">
                 <div class="step animate-on-scroll" data-animation="fadeInRight">
                     <div class="step-content">
@@ -815,15 +1018,22 @@
                         <p>Сотрудник делает селфи на рабочем месте через Telegram-бот (загрузка из галереи блокируется). Система распознает лицо сотрудника и верифицирует местоположение по GPS-координатам и фиксирует время начала и окончания работ.</p>
                     </div>
                     <div class="step-image">
-                        <img src="https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/desktop_manuscript_1.webp" alt="Идентификация сотрудника" loading="lazy">
+                        <div class="responsive-image"
+                             data-desktop="https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/desktop_face_recognition.webp"
+                             data-mobile="https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/mobile_face_recognition.webp">
+                        </div>
                     </div>
                 </div>
             </div>
 
+
             <div class="step-wrapper">
                 <div class="step animate-on-scroll" data-animation="fadeInLeft">
                     <div class="step-image">
-                        <img src="https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/desktop_laptop_screen_2.webp" alt="Отправка отчета" loading="lazy">
+                        <div class="responsive-image"
+                             data-desktop="https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/desktop_laptop_screen_2.webp"
+                             data-mobile="https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/mobile_laptop_screen_2.webp">
+                        </div>
                     </div>
                     <div class="step-content">
                         <div class="step-number">2</div>
@@ -833,6 +1043,7 @@
                 </div>
             </div>
 
+
             <div class="step-wrapper">
                 <div class="step animate-on-scroll" data-animation="fadeInRight">
                     <div class="step-content">
@@ -841,15 +1052,22 @@
                         <p>ИИ преобразует речь в текст, выделяет ключевые параметры (вид работ, состав бригады, время выполнения) и сохраняет структурированные данные.</p>
                     </div>
                     <div class="step-image">
-                        <img src="https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/desktop_imac_screen_3.webp" alt="Обработка данных ИИ" loading="lazy">
+                        <div class="responsive-image"
+                             data-desktop="https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/desktop_imac_screen_3.webp"
+                             data-mobile="https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/mobile_imac_screen_3.webp">
+                        </div>
                     </div>
                 </div>
             </div>
 
+
             <div class="step-wrapper">
                 <div class="step animate-on-scroll" data-animation="fadeInLeft">
                     <div class="step-image">
-                        <img src="https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/desktop_two_laptops_4.webp" alt="Формирование отчетов" loading="lazy">
+                        <div class="responsive-image"
+                             data-desktop="https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/desktop_two_laptops_4.webp"
+                             data-mobile="https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/mobile_two_laptops_4.webp">
+                        </div>
                     </div>
                     <div class="step-content">
                         <div class="step-number">4</div>
@@ -858,6 +1076,23 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+
+<section class="video-presentation">
+    <div class="container">
+        <div class="section-title">
+            <h2>Посмотрите WorkTime AI в действии</h2>
+            <p>12-минутная демонстрация всех возможностей системы</p>
+        </div>
+        <div class="video-wrapper">
+            <iframe width="100%"
+                    loading="lazy"
+                    src="https://www.youtube.com/embed/J48HY11YXxs?rel=0"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
         </div>
     </div>
 </section>
@@ -1040,6 +1275,17 @@
     </div>
 </footer>
 
+<div id="videoModal" class="modal">
+    <div class="modal-content">
+        <div class="close-container">
+            <span class="close" onclick="closeVideoModal()">&times;</span>
+        </div>
+        <div class="video-container">
+            <div id="player"></div>
+        </div>
+    </div>
+</div>
+
 <script>
     function preloadImages() {
         const slides = document.querySelectorAll('.slide');
@@ -1062,7 +1308,30 @@
         });
     }
 
+    function loadHowItWorksImages() {
+        document.querySelectorAll('.responsive-image').forEach(img => {
+            const isMobile = window.innerWidth < 768;
+            const imgUrl = isMobile ? img.dataset.mobile : img.dataset.desktop;
+            img.style.backgroundImage = `url('${imgUrl}')`;
+        });
+    }
+
+    function preloadHowItWorksImages() {
+        document.querySelectorAll('.responsive-image').forEach(img => {
+            const desktopImg = new Image();
+            desktopImg.src = img.dataset.desktop;
+
+            if (window.innerWidth < 768) {
+                const mobileImg = new Image();
+                mobileImg.src = img.dataset.mobile;
+            }
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
+        loadHowItWorksImages();
+        preloadHowItWorksImages();
+
         loadAdaptiveImages();
         preloadImages();
 
@@ -1089,6 +1358,7 @@
 
         window.addEventListener('resize', function () {
             loadAdaptiveImages();
+            loadHowItWorksImages();
         });
 
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1128,6 +1398,9 @@
         });
 
         window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            header.classList.toggle('header-scrolled', window.scrollY > 50);
+
             const steps = document.querySelectorAll('.step-wrapper');
             const windowHeight = window.innerHeight;
             const windowCenter = windowHeight / 2;
@@ -1143,15 +1416,86 @@
 
                 const scale = 0.95 + progress * 0.05;
                 stepImage.style.transform = `scale(${scale})`;
-
-                /*const img = stepImage.querySelector('img');
-                if (img) {
-                    const translateY = (windowCenter - stepCenter) * 0.05;
-                    img.style.transform = `translateY(${translateY}px) scale(${1 + progress * 0.05})`;
-                }*/
             });
         });
     });
+
+    let player;
+
+    function openVideoModal() {
+        const modal = document.getElementById('videoModal');
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+
+        const maxWidth = Math.min(900, window.innerWidth * 0.9);
+        const maxHeight = Math.min(506, window.innerHeight * 0.7);
+
+        const playerContainer = document.querySelector('.modal-content');
+        playerContainer.style.width = `${maxWidth}px`;
+        playerContainer.style.maxHeight = `${maxHeight}px`;
+
+        if (!window.YT) {
+            const tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            const firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+            window.onYouTubeIframeAPIReady = function() {
+                createPlayer();
+            };
+        } else if (!player) {
+            createPlayer();
+        }
+    }
+
+    function createPlayer() {
+        player = new YT.Player('player', {
+            height: '100%',
+            width: '100%',
+            videoId: 'J48HY11YXxs',
+            playerVars: {
+                'autoplay': 1,
+                'controls': 1,
+                'enablejsapi': 1,
+                'origin': window.location.origin,
+                'rel': 0,
+                'showinfo': 0
+            },
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    function onPlayerReady(event) {
+        event.target.playVideo();
+    }
+
+    function onPlayerStateChange(event) {
+    }
+
+    function closeVideoModal() {
+        const modal = document.getElementById('videoModal');
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+
+        if (player && player.stopVideo) {
+            player.stopVideo();
+            player.destroy();
+            player = null;
+        }
+
+        const playerElement = document.getElementById('player');
+        playerElement.innerHTML = '';
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeVideoModal();
+        }
+    });
+
 </script>
 </body>
 </html>
