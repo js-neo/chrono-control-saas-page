@@ -1,11 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WorkTime AI - автоматический учёт рабочего времени с ИИ</title>
+
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style">
+    <link rel="preload" href="https://www.youtube.com/iframe_api" as="script">
+    <link rel="preload" as="image" href="https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/desktop_manuscript_1.webp" imagesrcset="
+        https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/desktop_manuscript_1.webp 1200w,
+        https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/mobile_manuscript_1.webp 768w
+    " imagesizes="100vw">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
         :root {
             --primary: #4361ee;
@@ -96,7 +104,6 @@
             display: flex;
             align-items: center;
             height: 100%;
-
         }
 
         .nav-links li:last-child a {
@@ -179,7 +186,8 @@
             font-size: 48px;
             margin-bottom: 20px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            animation: fadeInUp 1s ease-out forwards;
+            animation: fadeInUp 0.5s ease-out 0.1s forwards;
+            opacity: 0;
         }
 
         .hero p {
@@ -187,16 +195,17 @@
             max-width: 700px;
             margin: 0 auto 40px;
             text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-            animation: fadeInUp 1s ease-out 0.3s forwards;
+            animation: fadeInUp 0.5s ease-out 0.3s forwards;
+            opacity: 0;
         }
 
         .hero-buttons {
             display: flex;
             justify-content: center;
             gap: 20px;
-            animation: fadeInUp 1s ease-out 0.6s forwards;
+            animation: fadeInUp 0.5s ease-out 0.5s forwards;
+            opacity: 0;
         }
-
 
         .slider {
             position: absolute;
@@ -205,6 +214,7 @@
             width: 100%;
             height: 100%;
             z-index: 0;
+            background-color: #f8f9fa;
         }
 
         .slide {
@@ -219,10 +229,12 @@
             background-position: center;
             background-repeat: no-repeat;
             will-change: transform, opacity;
+            background-color: #f8f9fa;
         }
 
         .slide.active {
             opacity: 1;
+            transition: opacity 0.3s ease-out;
         }
 
         .features {
@@ -351,6 +363,7 @@
             left: 0;
             border-radius: 16px;
             transition: transform 0.8s ease;
+            background-color: #f8f9fa;
         }
 
         .step-number {
@@ -531,6 +544,7 @@
             border-radius: 50%;
             margin-right: 15px;
             object-fit: cover;
+            background-color: #eee;
         }
 
         .author-info h4 {
@@ -647,6 +661,59 @@
             border: 1px solid rgba(0, 0, 0, 0.05);
             overflow: hidden;
             background: #000;
+            cursor: pointer;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000;
+            color: white;
+            font-size: 18px;
+        }
+
+        .video-preview {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .video-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s;
+        }
+
+        .video-preview:hover::before {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .youtube-play-btn {
+            position: relative;
+            z-index: 2;
+            width: 68px;
+            height: 48px;
+            transition: transform 0.3s;
+        }
+
+        .youtube-play-btn:hover {
+            transform: scale(1.1);
         }
 
         .video-wrapper iframe {
@@ -657,15 +724,6 @@
             height: 100%;
             border: none;
             border-radius: 15px;
-        }
-
-        .video-presentation .video-wrapper {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .video-presentation .video-wrapper iframe {
-            max-height: 450px;
         }
 
         .modal {
@@ -910,8 +968,6 @@
 
 <section class="hero">
     <div class="hero-container">
-        <link rel="preload" as="image" href="https://js-neo.github.io/chrono-control-saas-page/assets/desktop_manuscript_1.webp">
-
         <div class="slider">
             <div class="slide active"
                  data-desktop="https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/desktop_manuscript_1.webp"
@@ -938,9 +994,9 @@
                 <div class="hero-buttons">
                     <a href="#pricing" class="btn">Начать сейчас</a>
                     <a href="#how-it-works" class="btn btn-outline">Узнать больше</a>
-                    <button class="btn btn-video" onclick="openVideoModal()">
+                    <a class="btn" onclick="openVideoModal()">
                         <i class="fas fa-play"></i> Смотреть видео
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -1087,12 +1143,15 @@
             <p>12-минутная демонстрация всех возможностей системы</p>
         </div>
         <div class="video-wrapper">
-            <iframe width="100%"
-                    loading="lazy"
-                    src="https://www.youtube.com/embed/J48HY11YXxs?rel=0"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen></iframe>
+            <div class="video-preview"
+                 style="background-image: url('https://raw.githubusercontent.com/js-neo/chrono-control-saas-page/main/assets/mobile_background_image.webp')">
+                <div class="youtube-play-btn" onclick="loadYoutubeVideo(this.parentNode)">
+                    <svg width="68" height="48" viewBox="0 0 68 48">
+                        <path d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z" fill="red"></path>
+                        <path d="M 45,24 27,14 27,34" fill="white"></path>
+                    </svg>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -1181,7 +1240,7 @@
                     "WorkTime AI сократил время на формирование отчетности на 80%. Теперь сотрудники просто отправляют фото или видео через бота, а система сама все анализирует и структурирует. Экономия времени колоссальная!"
                 </div>
                 <div class="testimonial-author">
-                    <img src="https://via.placeholder.com/50" alt="Алексей Морозов" class="author-avatar">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+PHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjZWVlZWVlIi8+PHRleHQgeD0iMjUiIHk9IjI1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIGZpbGw9IiM5OTkiPjUweDUwPC90ZXh0Pjwvc3ZnPg==" alt="Алексей Морозов" class="author-avatar">
                     <div class="author-info">
                         <h4>Алексей Морозов</h4>
                         <p>Нач. участка, Кондиционер СПб</p>
@@ -1193,7 +1252,7 @@
                     "ИИ в WorkTime AI действительно работает! Система точно распознает сотрудников, анализирует видеоотчеты и даже напоминает о недостающих данных. За 2 месяца использования количество ошибок в отчетности снизилось до нуля."
                 </div>
                 <div class="testimonial-author">
-                    <img src="https://via.placeholder.com/50" alt="Виталий Сидоренко" class="author-avatar">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+PHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjZWVlZWVlIi8+PHRleHQgeD0iMjUiIHk9IjI1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIGZpbGw9IiM5OTkiPjUweDUwPC90ZXh0Pjwvc3ZnPg==" alt="Виталий Сидоренко" class="author-avatar">
                     <div class="author-info">
                         <h4>Виталий Сидоренко</h4>
                         <p>Зам. директора, СтройВент</p>
@@ -1205,7 +1264,7 @@
                     "Благодаря автоматическим отчетам WorkTime AI мы оптимизировали распределение задач и увеличили производительность на 30%. Особенно ценна возможность экспорта в Excel с сохранением всех ссылок на медиафайлы."
                 </div>
                 <div class="testimonial-author">
-                    <img src="https://via.placeholder.com/50" alt="Дмитрий Чайкин" class="author-avatar">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+PHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjZWVlZWVlIi8+PHRleHQgeD0iMjUiIHk9IjI1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIGZpbGw9IiM5OTkiPjUweDUwPC90ZXh0Pjwvc3ZnPg==" alt="Дмитрий Чайкин" class="author-avatar">
                     <div class="author-info">
                         <h4>Дмитрий Чайкин</h4>
                         <p>Гл. инженер, Кондиционер СПб</p>
@@ -1287,54 +1346,81 @@
 </div>
 
 <script>
-    function preloadImages() {
-        const slides = document.querySelectorAll('.slide');
-        slides.forEach(slide => {
+
+    window.addEventListener('error', function(e) {
+        if (e.message.includes('youtubei/v1/log_event') ||
+            e.message.includes('generate_204') ||
+            e.message.includes('play.google.com/log')) {
+            e.preventDefault();
+        }
+    }, true);
+
+    function loadCriticalImages() {
+
+        const firstSlide = document.querySelector('.slide.active');
+        if (firstSlide) {
+            const isMobile = window.innerWidth < 768;
+            const imgUrl = isMobile ?
+                firstSlide.dataset.mobile :
+                firstSlide.dataset.desktop;
+
+            firstSlide.style.backgroundImage = `url('${imgUrl}')`;
+
             const img = new Image();
-            img.src = slide.dataset.desktop;
+            img.src = imgUrl;
+            img.onload = function() {
+                firstSlide.style.opacity = '1';
+            };
+        }
 
-            if (window.innerWidth < 768) {
-                const mobileImg = new Image();
-                mobileImg.src = slide.dataset.mobile;
-            }
-        });
-    }
-
-    function loadAdaptiveImages() {
-        document.querySelectorAll('.slide').forEach(slide => {
+        const firstStepImage = document.querySelector('.step:first-child .responsive-image');
+        if (firstStepImage) {
             const isMobile = window.innerWidth < 768;
-            const imgUrl = isMobile ? slide.dataset.mobile : slide.dataset.desktop;
-            slide.style.backgroundImage = `url('${imgUrl}')`;
+            const imgUrl = isMobile ?
+                firstStepImage.dataset.mobile :
+                firstStepImage.dataset.desktop;
+
+            firstStepImage.style.backgroundImage = `url('${imgUrl}')`;
+
+            const img = new Image();
+            img.src = imgUrl;
+        }
+    }
+
+    function lazyLoadImages() {
+        const lazyImages = [
+            ...document.querySelectorAll('.slide:not(.active)'),
+            ...document.querySelectorAll('.step:not(:first-child) .responsive-image')
+        ];
+
+        lazyImages.forEach(element => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const isMobile = window.innerWidth < 768;
+                        const imgUrl = isMobile ?
+                            element.dataset.mobile :
+                            element.dataset.desktop;
+
+                        const img = new Image();
+                        img.src = imgUrl;
+                        img.onload = function() {
+                            if (element.classList.contains('responsive-image')) {
+                                element.style.backgroundImage = `url('${imgUrl}')`;
+                            } else {
+                                element.style.backgroundImage = `url('${imgUrl}')`;
+                            }
+                        };
+                        observer.unobserve(element);
+                    }
+                });
+            });
+
+            observer.observe(element);
         });
     }
 
-    function loadHowItWorksImages() {
-        document.querySelectorAll('.responsive-image').forEach(img => {
-            const isMobile = window.innerWidth < 768;
-            const imgUrl = isMobile ? img.dataset.mobile : img.dataset.desktop;
-            img.style.backgroundImage = `url('${imgUrl}')`;
-        });
-    }
-
-    function preloadHowItWorksImages() {
-        document.querySelectorAll('.responsive-image').forEach(img => {
-            const desktopImg = new Image();
-            desktopImg.src = img.dataset.desktop;
-
-            if (window.innerWidth < 768) {
-                const mobileImg = new Image();
-                mobileImg.src = img.dataset.mobile;
-            }
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        loadHowItWorksImages();
-        preloadHowItWorksImages();
-
-        loadAdaptiveImages();
-        preloadImages();
-
+    function initSlider() {
         const slider = document.querySelector('.slider');
         if (!slider) return;
 
@@ -1347,20 +1433,37 @@
             slides[currentSlide].classList.remove('active');
             currentSlide = (currentSlide + 1) % slides.length;
             slides[currentSlide].classList.add('active');
+
+            const nextSlideIndex = (currentSlide + 1) % slides.length;
+            const nextSlide = slides[nextSlideIndex];
+            const isMobile = window.innerWidth < 768;
+            const imgUrl = isMobile ?
+                nextSlide.dataset.mobile :
+                nextSlide.dataset.desktop;
+
+            const img = new Image();
+            img.src = imgUrl;
         }
 
         if (slides.length > 1) {
+
+            const secondSlide = slides[1];
+            const isMobile = window.innerWidth < 768;
+            const imgUrl = isMobile ?
+                secondSlide.dataset.mobile :
+                secondSlide.dataset.desktop;
+
+            const img = new Image();
+            img.src = imgUrl;
+
             setTimeout(() => {
                 nextSlide();
                 setInterval(nextSlide, 5000);
             }, 1000);
         }
+    }
 
-        window.addEventListener('resize', function () {
-            loadAdaptiveImages();
-            loadHowItWorksImages();
-        });
-
+    function initNavigation() {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -1372,7 +1475,9 @@
                 }
             });
         });
+    }
 
+    function initScrollAnimations() {
         const animateElements = document.querySelectorAll('.animate-on-scroll');
 
         const observerOptions = {
@@ -1399,7 +1504,9 @@
 
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
-            header.classList.toggle('header-scrolled', window.scrollY > 50);
+            if (header) {
+                header.classList.toggle('header-scrolled', window.scrollY > 50);
+            }
 
             const steps = document.querySelectorAll('.step-wrapper');
             const windowHeight = window.innerHeight;
@@ -1418,9 +1525,15 @@
                 stepImage.style.transform = `scale(${scale})`;
             });
         });
-    });
+    }
 
     let player;
+
+    function loadYoutubeVideo(element) {
+        element.innerHTML = '<iframe width="100%" src="https://www.youtube.com/embed/J48HY11YXxs?rel=0&autoplay=1" ' +
+            'frameborder="0" allow="accelerometer; autoplay; clipboard-write; ' +
+            'encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+    }
 
     function openVideoModal() {
         const modal = document.getElementById('videoModal');
@@ -1449,6 +1562,12 @@
     }
 
     function createPlayer() {
+
+        const playerElement = document.getElementById('player');
+        if (playerElement.querySelector('iframe')) {
+            return;
+        }
+
         player = new YT.Player('player', {
             height: '100%',
             width: '100%',
@@ -1469,10 +1588,15 @@
     }
 
     function onPlayerReady(event) {
-        event.target.playVideo();
+        try {
+            event.target.playVideo();
+        } catch (e) {
+            console.error('Error playing video:', e);
+        }
     }
 
     function onPlayerStateChange(event) {
+
     }
 
     function closeVideoModal() {
@@ -1480,9 +1604,13 @@
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
 
-        if (player && player.stopVideo) {
-            player.stopVideo();
-            player.destroy();
+        if (player && typeof player.stopVideo === 'function') {
+            try {
+                player.stopVideo();
+                player.destroy();
+            } catch (e) {
+                console.error('Error stopping YouTube player:', e);
+            }
             player = null;
         }
 
@@ -1496,7 +1624,33 @@
         }
     });
 
+    function handleResize() {
+
+        document.querySelectorAll('.slide').forEach(slide => {
+            const isMobile = window.innerWidth < 768;
+            const imgUrl = isMobile ? slide.dataset.mobile : slide.dataset.desktop;
+            slide.style.backgroundImage = `url('${imgUrl}')`;
+        });
+
+        document.querySelectorAll('.responsive-image').forEach(img => {
+            const isMobile = window.innerWidth < 768;
+            const imgUrl = isMobile ? img.dataset.mobile : img.dataset.desktop;
+            img.style.backgroundImage = `url('${imgUrl}')`;
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        loadCriticalImages();
+        initSlider();
+        initNavigation();
+        initScrollAnimations();
+
+        setTimeout(lazyLoadImages, 500);
+
+        window.addEventListener('resize', handleResize);
+    });
+
+    window.addEventListener('load', handleResize);
 </script>
 </body>
 </html>
-
